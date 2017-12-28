@@ -1,0 +1,58 @@
+{
+  "name": "schema-to-object",
+  "description": "",
+  "version": "1.0.0",
+  "main": "lib/defaults.js",
+  "author": {
+    "name": "forsigner",
+    "email": "forsigner@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "express",
+    "schema-to-object",
+    "middleware"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/forsigner/schema-to-object.git"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-1": "^6.24.1",
+    "eslint": "^4.3.0",
+    "eslint-config-egg": "^5.0.0",
+    "standard-version": "^4.2.0"
+  },
+  "files": [
+    "LICENSE",
+    "lib/**/*"
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "npm run compile && node example/index.js",
+    "compile": "babel src -d lib",
+    "release": "standard-version"
+  },
+  "bugs": {
+    "url": "https://github.com/forsigner/schema-to-object/issues"
+  },
+  "homepage": "https://github.com/forsigner/schema-to-object",
+  "_npmUser": {
+    "name": "forsigner",
+    "email": "forsigner@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "forsigner",
+      "email": "forsigner@gmail.com"
+    }
+  ],
+  "dependencies": {
+    "comment-json": "^1.1.3"
+  }
+}
