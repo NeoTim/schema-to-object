@@ -21,7 +21,7 @@ const convert = function(schema, definitions) {
       if (!properties.hasOwnProperty(key)) continue;
 
       if (properties[key].description) {
-        properties[`// ${key}`] = [ null, `// ${properties[key].description}` ];
+        properties[`// ${key}`] = properties[key].description;
       }
 
       properties[key] = convert(properties[key], definitions);
