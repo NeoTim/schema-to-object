@@ -40,4 +40,5 @@ const schema = {
 };
 
 const obj = defaults(schema);
+// const obj = defaults(schema, { comment: true });
 console.log(JSON.stringify(obj, null, 2));

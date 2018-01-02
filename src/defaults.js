@@ -1,16 +1,12 @@
 'use strict';
 
-const { clone, getLocalRef, mergeAllOf } = require('./util');
+function clone(source) {
+  return JSON.parse(JSON.stringify(source));
+}
 
-const convert = function(schema, definitions) {
+const convert = function(schema, comment) {
   if (typeof schema.default !== 'undefined') {
     return schema.default;
-  } else if (typeof schema.allOf !== 'undefined') {
-    const mergedItem = mergeAllOf(schema.allOf, definitions);
-    return convert(mergedItem, definitions);
-  } else if (typeof schema.$ref !== 'undefined') {
-    const reference = getLocalRef(schema.$ref, definitions);
-    return convert(reference, definitions);
   } else if (schema.type === 'object') {
     const { properties } = schema;
     if (!properties) {
@@ -20,11 +16,13 @@ const convert = function(schema, definitions) {
     for (const key in properties) {
       if (!properties.hasOwnProperty(key)) continue;
 
-      if (properties[key].description) {
-        properties[`// ${key}`] = properties[key].description;
+      if (comment) {
+        if (properties[key].description) {
+          properties[`// ${key}`] = properties[key].description;
+        }
       }
 
-      properties[key] = convert(properties[key], definitions);
+      properties[key] = convert(properties[key], comment);
       if (typeof properties[key] === 'undefined') {
         delete properties[key];
       }
@@ -41,7 +39,7 @@ const convert = function(schema, definitions) {
     // tuple-typed arrays
     if (schema.items.constructor === Array) {
       const values = schema.items.map(function(item) {
-        return convert(item, definitions);
+        return convert(item, comment);
       });
       // remove undefined items at the end (unless required by minItems)
       for (let i = values.length - 1; i >= 0; i--) {
@@ -55,7 +53,7 @@ const convert = function(schema, definitions) {
       return values;
     }
     // object-typed arrays
-    const value = convert(schema.items, definitions);
+    const value = convert(schema.items, comment);
     if (typeof value === 'undefined') {
       return [];
     }
@@ -67,8 +65,9 @@ const convert = function(schema, definitions) {
   }
 };
 
-function main(schema) {
-  return convert(clone(schema));
+function main(schema, options = {}) {
+  const { comment = false } = options;
+  return convert(clone(schema), comment);
 }
 
 module.exports = main;
